@@ -9,6 +9,14 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+// if (process.env.NODE) {
+// Adds messages only in a dev environment
+loadDevMessages();
+loadErrorMessages();
+// }
+
 const App: FunctionComponent = () => {
   return (
     <>

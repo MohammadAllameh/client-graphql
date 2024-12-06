@@ -1,7 +1,8 @@
 import { ChangeEvent, FunctionComponent, useState } from "react";
 import { useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 
-import { getTeacherQuery } from "../queries/queries";
+import { getTeacherQuery, addLessonMutation, getLessonQuery } from "../queries/queries";
 
 type TeacherType = {
     name: string,
@@ -13,13 +14,20 @@ const AddLesson: FunctionComponent = () => {
     const [group, setGroup] = useState<string>('');
     const [teacherId, setTeacherId] = useState<string>('');
     const { loading, error, data } = useQuery(getTeacherQuery);
-    const onSubmitHandler = (event: ChangeEvent<HTMLFormElement>) => {
+    const [addLesson] = useMutation(addLessonMutation);
+
+    const onSubmitHandler = async (event: ChangeEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log(name);
         console.log(group);
         console.log(teacherId);
 
+        await addLesson({ variables: { name, group, teacherId }, refetchQueries: [{ query: getLessonQuery }] });
+
     }
+    const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setTeacherId(event.target.value);
+    };
     // if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
     // console.log(data?.teachers[0] || '')
@@ -36,13 +44,14 @@ const AddLesson: FunctionComponent = () => {
                 </div>
                 <div>
                     <label htmlFor="Teacher">Teacher: </label>
-                    <select name="teacherId" id="teacherId" onChange={() => setTeacherId(teacherId)}  >
+                    <select name="teacherId" id="teacherId" value={teacherId} onChange={handleSelectChange} >
                         {
                             loading ? <option>Loading</option> : <></>
                         }
+                        <option value="none" defaultValue='none'>none</option>
                         {data?.teachers?.map(({ id, name }: TeacherType) => {
                             return (
-                                <option key={id} value={id} onChange={() => { setTeacherId(id); console.log(id) }} >{name}</option>
+                                <option key={id} value={id}  >{name}</option>
 
                             )
                         })}

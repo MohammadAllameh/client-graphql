@@ -19,6 +19,17 @@ const getTeacherQuery = gql`
         }
     }
 `
+//   mutation AddTodo($type: String!) {
+//     addTodo(type: $type) {
+const addLessonMutation = gql`
+    mutation Addlesson($name: String!, $group: String!, $teacherId: ID!) {
+        addlesson(name: $name, group: $group, teacherId: $teacherId) {
+            id
+            name
+            group
+        }
+    }
+`
 
 
-export { getLessonQuery, getTeacherQuery };
+export { getLessonQuery, getTeacherQuery, addLessonMutation };
