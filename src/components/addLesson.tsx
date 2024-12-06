@@ -11,7 +11,7 @@ type TeacherType = {
 const AddLesson: FunctionComponent = () => {
     const [name, setName] = useState<string>('');
     const [group, setGroup] = useState<string>('');
-    const [teacherId, setTeacherId] = useState<string>();
+    const [teacherId, setTeacherId] = useState<string>('');
     const { loading, error, data } = useQuery(getTeacherQuery);
     const onSubmitHandler = (event: ChangeEvent<HTMLFormElement>) => {
         event.preventDefault();
