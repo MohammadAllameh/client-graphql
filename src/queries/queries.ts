@@ -11,5 +11,14 @@ const getLessonQuery = gql`
     }
 `
 
+const getTeacherQuery = gql`
+    query Teachers {
+        teachers {
+            id
+            name
+        }
+    }
+`
 
-export { getLessonQuery }
+
+export { getLessonQuery, getTeacherQuery };
